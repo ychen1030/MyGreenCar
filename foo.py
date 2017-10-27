@@ -1,9 +1,11 @@
 
-PARTNER_0_NAME = "Krste" #TODO: Change to Partner 0's name
+PARTNER_0_NAME = "Ramon" #TODO: Change to Partner 0's name
 """ If y is less than or equal to 1, return "pushed"
 	otherwise, return y * y """
 def zero_func(y):
-	# TODO: Partner 0 completes
+	if y <= 1:
+		return "pushed"
+	return y*y
 
 PARTNER_1_NAME = "Weifan" #TODO: Change to Partner 1's name
 """ If y is less than or equal to 1, return "pulled"
