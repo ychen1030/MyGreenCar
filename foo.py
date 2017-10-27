@@ -5,11 +5,14 @@ PARTNER_0_NAME = "Krste" #TODO: Change to Partner 0's name
 def zero_func(y):
 	# TODO: Partner 0 completes
 
-PARTNER_1_NAME = "Randy" #TODO: Change to Partner 1's name
+PARTNER_1_NAME = "Weifan" #TODO: Change to Partner 1's name
 """ If y is less than or equal to 1, return "pulled"
 	otherwise, return y + y """
 def one_func(y):
 	# TODO: Partner 1 completes
+    if y<=1:
+        return "pulled"
+    return y*y
 
 
 def foo(x, y):
