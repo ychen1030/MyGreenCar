@@ -15,7 +15,8 @@ def one_func(y):
     if y<=1:
         return "pulled"
     return y*y
-
+	
+ print "change everythin"
 
 def foo(x, y):
 	if x == 0:
