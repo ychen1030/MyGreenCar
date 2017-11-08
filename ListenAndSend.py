@@ -40,6 +40,7 @@ base = 'http://127.0.0.1:5000'
 network_id = 'local'
 header = {}
 
+#Test Code
 #Create connection with Test Object
 query_sensor = {
     'object-name': 'Sensor Reading'
@@ -50,12 +51,93 @@ query_button = {
 query_report = {
     'object-name' : 'Report State'
 }
+
+#Part1
+ #Create new connection with car objects to store data obtained from
+ #MyGreenCar metamodel
+query_leaf_co2 = {
+    'object-name': 'MyGreenCar Emission'
+}
+query_leaf_cost = {
+    'object-name': 'MyGreenCar Cost'
+}
+query_camry_co2 = {
+    'object-name': 'MyGreenCar Emission'
+}
+query_camry_cost = {
+    'object-name': 'MyGreenCar Cost'
+}
+query_model-s_co2 = {
+    'object-name': 'MyGreenCar Emission'
+}
+query_model-s_cost = {
+    'object-name': 'MyGreenCar Cost'
+}
+query_crv_co2 = {
+    'object-name': 'MyGreenCar Emission'
+}
+query_crv_cost = {
+    'object-name': 'MyGreenCar Cost'
+}
+query_bmw_co2 = {
+    'object-name': 'MyGreenCar Emission'
+}
+query_bmw_cost = {
+    'object-name': 'MyGreenCar Cost'
+}
+query_analysis-a_report = {
+    'object-name' : 'Report State'
+}
+query_analysis-b_report = {
+    'object-name' : 'Report State'
+}
+query_analysis-c_report = {
+    'object-name' : 'Report State'
+}
+
+#Test code
 endpoint_sensor = '/networks/'+network_id+'/objects/sensorreading'
 endpoint_button = '/networks/'+network_id+'/objects/buttonstate'
 endpoint_report = '/networks/'+network_id+'/objects/test-object'
+
+#MyGreenCar metamodel data
+#Create connection to the endpoints
+endpoint_leaf_co2 = '/networks/'+network_id+'/objects/sensorreading'
+endpoint_leaf_cost = '/networks/'+network_id+'/objects/buttonstate'
+endpoint_camry_co2 = '/networks/'+network_id+'/objects/test-object'
+endpoint_camry_cost = '/networks/'+network_id+'/objects/sensorreading'
+endpoint_model-s_co2 = '/networks/'+network_id+'/objects/buttonstate'
+endpoint_model-s_cost = '/networks/'+network_id+'/objects/test-object'
+endpoint_crv_co2 = '/networks/'+network_id+'/objects/sensorreading'
+endpoint_crv_cost = '/networks/'+network_id+'/objects/buttonstate'
+endpoint_bmw_co2 = '/networks/'+network_id+'/objects/test-object'
+endpoint_bmw_cost = '/networks/'+network_id+'/objects/sensorreading'
+endpoint_analysis-a = '/networks/'+network_id+'/objects/buttonstate'
+endpoint_analysis-b = '/networks/'+network_id+'/objects/test-object'
+endpoint_analysis-c = '/networks/'+network_id+'/objects/test-object'
+
+#Test code
 response_sensor = requests.request('PUT', base + endpoint_sensor, params=query_sensor, headers=header, timeout=120 )
 response_button = requests.request('PUT', base + endpoint_button, params=query_button, headers=header, timeout=120 )
 response_report = requests.request('PUT', base + endpoint_button, params=query_report, headers=header, timeout=120 )
+
+#MyGreenCar metamodel data
+#Push data to the endpoints
+response_leaf_co2 = requests.request('PUT', base + endpoint_leaf_co2, params=query_leaf_co2, headers=header, timeout=120 )
+response_leaf_cost = requests.request('PUT', base + endpoint_leaf_cost, params=query_leaf_cost, headers=header, timeout=120 )
+response_camry_co2 = requests.request('PUT', base + endpoint_camry_co2, params=query_camry_co2, headers=header, timeout=120 )
+response_camry_cost = requests.request('PUT', base + endpoint_camry_cost, params=query_camry_cost, headers=header, timeout=120 )
+response_model-s_co2 = requests.request('PUT', base + endpoint_model-s_co2, params=query_model-s_co2, headers=header, timeout=120 )
+response_model-s_cost = requests.request('PUT', base + endpoint_model-s_cost, params=query_model-s_cost, headers=header, timeout=120 )
+response_crv_co2 = requests.request('PUT', base + endpoint_crv_co2, params=query_crv_co2, headers=header, timeout=120 )
+response_crv_cost = requests.request('PUT', base + endpoint_crv_cost, params=query_crv_cost, headers=header, timeout=120 )
+response_bmw_co2 = requests.request('PUT', base + endpoint_bmw_co2, params=query_bmw_co2, headers=header, timeout=120 )
+response_bmw_cost = requests.request('PUT', base + endpoint_bmw_cost, params=query_bmw_cost, headers=header, timeout=120 )
+response_analysis-a = requests.request('PUT', base + endpoint_analysis-a, params=query_analysis-a_report, headers=header, timeout=120 )
+response_analysis-b = requests.request('PUT', base + endpoint_analysis-b, params=query_analysis-b_report, headers=header, timeout=120 )
+response_analysis-c = requests.request('PUT', base + endpoint_analysis-c, params=query_analysis-c_report, headers=header, timeout=120 )
+
+#Test code make sure data has been posted, if not spit an error
 resp_sensor = json.loads( response_sensor.text )
 resp_button = json.loads( response_button.text )
 resp_report = json.loads (response_report.text )
