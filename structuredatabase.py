@@ -38,28 +38,56 @@ with open(fname, 'rU') as main_data_csv:
 
 
             #Create scripts to drop tables and create tables
-            drop_tables = ("DROP TABLE IF EXISTS " +
+            drop_table_car = ("DROP TABLE IF EXISTS " +
                             "[" + str(car_type) +"]" )
+            drop_table_clean = ("DROP TABLE IF EXISTS " +
+                            "[" + str(car_type) + "_clean" + "]" )
+            drop_table_distance = ("DROP TABLE IF EXISTS " +
+                            "[" + str(car_type) + "_distance" + "]" )
 
-            create_tables = ("CREATE TABLE IF NOT EXISTS " +
+            drop_table_emissions = ("DROP TABLE IF EXISTS " +
+                            "[" + str(car_type) + "_emissions" + "]" )
+
+            create_table_car = ("CREATE TABLE IF NOT EXISTS " +
                             "[" + str(car_type) + "]" +
                             """ (id INTEGER PRIMARY KEY UNIQUE,
-                            time TIME,
                             date DATE,
-                            latitude INTEGER,
-                            longitude INTEGER,
-                            latitudedeg INTEGER,
-                            longitudedeg INTEGER,
-                            speed INTEGER,
-                            gpsangle INTEGER,
-                            altitud INTEGER)""")
+                            latitude FLOAT,
+                            longitude FLOAT,
+                            latitudedeg FLOAT,
+                            longitudedeg FLOAT,
+                            speed FLOAT,
+                            gpsangle FLOAT,
+                            altitud FLOAT)""")
 
+            create_table_clean = ("CREATE TABLE IF NOT EXISTS " +
+                            "[" + str(car_type)+ "_clean" + "]" +
+                            """ (id INTEGER PRIMARY KEY UNIQUE,
+                            date DATE,
+                            timestamp FLOAT,
+                            time_gap FLOAT,
+                            distance FLOAT)""")
+
+            create_table_distance = ("CREATE TABLE IF NOT EXISTS " +
+                            "[" + str(car_type)+ "_distance" + "]" +
+                            """ (date DATE UNIQUE, distance FLOAT)""")
+
+            create_table_emissions = ("CREATE TABLE IF NOT EXISTS " +
+                            "[" + str(car_type)+ "_emissions" + "]" +
+                            """ (date DATE UNIQUE, emissions FLOAT)""")
             #Run the drop tables and create tables scripts
-            cur.execute(drop_tables)
-
-            cur.execute(create_tables)
+            cur.execute(drop_table_car)
+            cur.execute(drop_table_clean)
+            cur.execute(drop_table_distance)
+            cur.execute(drop_table_emissions)
+            cur.execute(create_table_car)
+            cur.execute(create_table_clean)
+            cur.execute(create_table_distance)
+            cur.execute(create_table_emissions)
 
     except:
         print "error posting data, try again"
+
+
 
 conn.commit()

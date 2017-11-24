@@ -96,23 +96,28 @@ custom_sidebar_link_callback = function(select){
     var plotCalls_sensor = 0;
     var plotCalls_button = 0;
     var plotCalls_report = 0;
+    var plotCalls_analysisA = 0;
+    var plotCalls_analysisB = 0;
+    var plotCalls_analysisC = 0;
+
     var plotSensor = setInterval( function(){
       getPoints('local','sensorreading','stm-sensor', function(points){
         console.log('The Sensor points request was successful!');
         loadPlotSensor(points);
       });
-      if (plotCalls_sensor > 1000){
+      if (plotCalls_sensor > 20){
         console.log('Clear sensor timer');
         clearInterval (plotSensor);
       }else{
         plotCalls_sensor += 1;
       }
+
     var plotButton = setInterval(function(){
       getPoints('local','buttonstate','stm-button',function(points){
         console.log('The button points request was successful!');
         loadPlotButton(points);
       });
-      if (plotCalls_button > 1000){
+      if (plotCalls_button > 20){
         console.log('Clear button timer');
         clearInterval (plotButton);
       }else{
@@ -125,16 +130,57 @@ custom_sidebar_link_callback = function(select){
         console.log('The report points request was successful!');
         loadPlotReport(points);
       });
-      if (plotCalls_report > 1000){
+      if (plotCalls_report > 20){
         console.log('Clear button timer');
         clearInterval (plotReport);
       }else{
         plotCalls_button +=1;
       }
     })
+
+    var somethingCoolA = setInterval(function(){
+      getPoints('local','analysis-a','stm-analysis-a',function(points){
+        console.log('The button points request was successful!');
+        loadCoolAReport(points);
+      });
+      if (plotCalls_analysisA > 1000){
+        console.log('Clear button timer');
+        clearInterval (somethingCoolA);
+      }else{
+        plotCalls_analysisA +=1;
+      }
+    })
+
+    var somethingCoolB = setInterval(function(){
+      getPoints('local','analysis-b','stm-analysis-b',function(points){
+        console.log('The button points request was successful!');
+        loadCoolBReport(points);
+      });
+      if (plotCalls_analysisB > 1000){
+        console.log('Clear button timer');
+        clearInterval (somethingCoolB);
+      }else{
+        plotCalls_analysisB +=1;
+      }
+    })
+
+    var somethingCoolC = setInterval(function(){
+      getPoints('local','analysis-c','stm-analysis-c',function(points){
+        console.log('The button points request was successful!');
+        loadCoolCReport(points);
+      });
+      if (plotCalls_analysisC > 1000){
+        console.log('Clear button timer');
+        clearInterval (somethingCoolC);
+      }else{
+        plotCalls_analysisC +=1;
+      }
+    })
+
    }, 1000);
   }
 }
+
 
 
 function loadPlotSensor( points ){
@@ -156,7 +202,7 @@ function loadPlotSensor( points ){
      plot_sensor.highcharts().series[0].setData( datapoints_sensor );
   }else{
     plot_sensor.highcharts().addSeries({
-      name: "Photo Sensor Reading",
+      name: "Comulative emissions",
       data: datapoints_sensor
     });
   }
@@ -181,7 +227,7 @@ function loadPlotButton( points ){
      plot_button.highcharts().series[0].setData( datapoints_button );
   }else{
     plot_button.highcharts().addSeries({
-      name: "Button State (0 = button ON)",
+      name: "Fuel Cost",
       data: datapoints_button
     });
   }
@@ -206,8 +252,83 @@ function loadPlotReport( points ){
      plot_report.highcharts().series[0].setData( datapoints_report );
   }else{
     plot_report.highcharts().addSeries({
-      name: "Percentage of light output ",
+      name: "Distance (km) per day ",
       data: datapoints_report
+    });
+  }
+}
+
+function loadCoolAReport( points ){
+  var plot_coolA = $('#content-report-AnalysisA');
+  // var plot_button = $('#content-report-button');
+  // Check if plot has a Highcharts element
+  if( plot_coolA.highcharts() === undefined ){
+    // Create a Highcharts element
+    plot_coolA.highcharts( report_coolA );
+  }
+    // Iterate over points to place in Highcharts format
+  var datapoints_coolA = [];
+  for ( var i = 0; i < points.length; i++){
+    var at_date = new Date(points[i].at);
+    var at = at_date.getTime() - at_date.getTimezoneOffset()*60*1000; datapoints_coolA.unshift( [ at, points[i].value] );
+  }
+  // Update Highcharts plot
+  if( plot_coolA.highcharts().series.length > 0 ){
+     plot_coolA.highcharts().series[0].setData( datapoints_coolA );
+  }else{
+    plot_coolA.highcharts().addSeries({
+      name: "Emissions from a BEV, Nissan Leaf ",
+      data: datapoints_coolA
+    });
+  }
+}
+
+function loadCoolBReport( points ){
+  var plot_coolB = $('#content-report-AnalysisB');
+  // var plot_button = $('#content-report-button');
+  // Check if plot has a Highcharts element
+  if( plot_coolB.highcharts() === undefined ){
+    // Create a Highcharts element
+    plot_coolB.highcharts( report_coolB );
+  }
+    // Iterate over points to place in Highcharts format
+  var datapoints_coolB = [];
+  for ( var i = 0; i < points.length; i++){
+    var at_date = new Date(points[i].at);
+    var at = at_date.getTime() - at_date.getTimezoneOffset()*60*1000; datapoints_coolB.unshift( [ at, points[i].value] );
+  }
+  // Update Highcharts plot
+  if( plot_coolB.highcharts().series.length > 0 ){
+     plot_coolB.highcharts().series[0].setData( datapoints_coolB );
+  }else{
+    plot_coolB.highcharts().addSeries({
+      name: "Cost from a BEV, Nissan Leaf",
+      data: datapoints_coolB
+    });
+  }
+}
+
+function loadCoolCReport( points ){
+  var plot_coolC = $('#content-report-AnalysisC');
+  // var plot_button = $('#content-report-button');
+  // Check if plot has a Highcharts element
+  if( plot_coolC.highcharts() === undefined ){
+    // Create a Highcharts element
+    plot_coolC.highcharts( report_coolC );
+  }
+    // Iterate over points to place in Highcharts format
+  var datapoints_coolC = [];
+  for ( var i = 0; i < points.length; i++){
+    var at_date = new Date(points[i].at);
+    var at = at_date.getTime() - at_date.getTimezoneOffset()*60*1000; datapoints_coolC.unshift( [ at, points[i].value] );
+  }
+  // Update Highcharts plot
+  if( plot_coolC.highcharts().series.length > 0 ){
+     plot_coolC.highcharts().series[0].setData( datapoints_coolC );
+  }else{
+    plot_coolC.highcharts().addSeries({
+      name: "Potential Savings",
+      data: datapoints_coolC
     });
   }
 }
@@ -225,13 +346,14 @@ var report_plot_report = {
   },
   yAxis: {
     title :{
-      text : "Percentage of Light output (100% = max)"
+      text : "Distance (km)"
     },
   },
   title : {
-    text : "Percentage of Light Intensity in Arduino vs time"
+    text : "Vehicle Distance Traveled"
   }
 };
+
 
 var report_plot_sensor = {
   chart: {
@@ -246,11 +368,11 @@ var report_plot_sensor = {
   },
   yAxis: {
     title :{
-      text : "Raw Sensor Reading"
+      text : "Emissions gCO2e"
     },
   },
   title : {
-    text : "Sensor Reading vs time"
+    text : "Vehicle Emissions"
   }
 };
 
@@ -272,5 +394,90 @@ var report_plot_button = {
   },
   title : {
     text : "Button State vs time"
+  }
+};
+
+
+var report_plot_button = {
+  chart: {
+    type: 'spline'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: { // don't display the dummy year
+      month: '%e. %b',
+      year: '%b'
+    },
+  },
+  yAxis: {
+    title :{
+      text : "Fuel Cost"
+    },
+  },
+  title : {
+    text : "Cost of Use of Vehicle"
+  }
+};
+
+var report_coolA = {
+  chart: {
+    type: 'spline'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: { // don't display the dummy year
+      month: '%e. %b',
+      year: '%b'
+    },
+  },
+  yAxis: {
+    title :{
+      text : "Emissions gCO2e"
+    },
+  },
+  title : {
+    text : "Vehicle Emissions"
+  }
+};
+
+var report_coolB = {
+  chart: {
+    type: 'spline'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: { // don't display the dummy year
+      month: '%e. %b',
+      year: '%b'
+    },
+  },
+  yAxis: {
+    title :{
+      text : "Fuel Cost"
+    },
+  },
+  title : {
+    text : "Cost of Use of Vehicle"
+  }
+};
+
+var report_coolC = {
+  chart: {
+    type: 'spline'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: { // don't display the dummy year
+      month: '%e. %b',
+      year: '%b'
+    },
+  },
+  yAxis: {
+    title :{
+      text : "Emissions gCO2e"
+    },
+  },
+  title : {
+    text : "Potential saving from Vehicle Emissions"
   }
 };

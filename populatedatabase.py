@@ -1,16 +1,3 @@
-# Before you run this program.
-# This program is intended to read the csv files have been:
-# 1) Downloaded from the utility API website as csv files
-# 2) Saved in the Data folder
-# 3) The name convention nees to be [address] + @ + [type of bill]
-# 4) The file main_data.csv needs to be populated with the information regarding the files
-
-# Once the data is stored with the correct naming convention and the main_data.csv
-# has been populated
-# 1) This program will go over all the files,
-# 2) Create a table inside the astrodek.sqlite database for each house/apt
-# 3) Store .......... in the data base
-
 import csv
 import sqlite3
 import re
@@ -31,7 +18,6 @@ d1 = os.path.join(d,'Data')
 fname = os.path.join(d1,'main_data.csv')
 
 
-
 with open(fname, 'rU') as main_data_csv:
     main_data_reader = csv.DictReader(main_data_csv)
     for i in main_data_reader:
@@ -44,38 +30,48 @@ with open(fname, 'rU') as main_data_csv:
             for i in main_data_reader:
                 time_v = str(i['Time'])
                 date_v = str(i[' Date'])
-                # latitude_v = float(i['Latitude'])
-                # longitude_v = float(i['Longitude'])
-                # latitudedeg_v = float(i['Latitudedeg'])
-                # longitudedeg_v = float(i['Longitudedeg'])
-                # speed_v = float(i['Speed'])
-                # gpsangle_v = float(i['GPSangle'])
-                # altitud_v = float(i['Altitud'])
-                print time_v, date_v
-                # #Cleanup data from start of measurement
-                # interval_start_date = re.findall('[0-9]\S+ ',interval_start)
-                # interval_start_date_text = str(interval_start_date[0])
-                # interval_start_time = re.findall('\s.+', interval_start)
-                # interval_start_time_text = str(interval_start_time[0])
-                # #Cleanup data from end of measurement
-                # interval_end_date = re.findall('[0-9]\S+ ',interval_end)
-                # interval_end_date_text = str(interval_end_date[0])
-                # interval_end_time = re.findall('\s.+', interval_end)
-                # interval_end_time_text = str(interval_end_time[0])
-                #
-                # #Cleanup data required for date and timestamp
-                # time_text = interval_start_date_text + interval_start_time_text
+                latitude_v = str(i[' Latitude'])
+                longitude_v = str(i[' Longitude'])
+                latitudedeg_v = str(i[' Latitudedegree'])
+                longitudedeg_v = str(i[' Longitudedegree'])
+                speed_v = float(i[' Speed'])
+                gpsangle_v = str(i[' GPSangle'])
+                altitud_v = str(i[' Altitude'])
+
+
+                #Cleanup data from start of measurement
+                time_v_clean = (re.findall('\S+[0-9]',time_v))
+                date_v_clean = re.findall('\S+[0-9]',date_v)
+                latitude_v_clean = re.findall('\S+[0-9]',latitude_v)
+                longitude_v_clean = re.findall('\S+[0-9]',longitude_v)
+                latitudedeg_v_clean = re.findall('\S+[a-zA-Z0-9_.-]',latitudedeg_v)
+                longitudedeg_v_clean = re.findall('\S+[a-zA-Z0-9_.-]',longitudedeg_v)
+
+                if speed_v != 0:
+                    speed_v_clean = speed_v
+
+                else:
+                    speed_v_clean = 0.00
+
+                gpsangle_v_clean = gpsangle_v
+                altitud_v_clean = altitud_v
+
+                # Cleanup data required for date and timestamp
+                # time_text = date_v_clean[0] + ' ' + time_v_clean[0]
                 # try:
-                #     datetime_test = (datetime.strptime(time_text, '%m-%d-%y  %H:%M'))
-                #     # datetime_unix = dtt.datetime.strptime(datetime_test,'%Y-%m-%d %H:%M:%S')
+                #     datetime_test = (datetime.strptime(time_text, '%d/%m/%Y  %H:%M:%S'))
                 #     ut = (datetime_test - dtt.datetime(1970, 1, 1)).total_seconds()
                 # except:
-                #     datetime_test = (datetime.strptime(time_text, '%m/%d/%y  %H:%M'))
-                #     # datetime_unix = dtt.datetime.strptime(datetime_test,'%Y-%m-%d %H:%M:%S')
-                #     ut = (datetime_test - dtt.datetime(1970, 1, 1)).total_seconds()
-                #
-                # sql_script = 'INSERT OR IGNORE INTO' + '[' + str(house_name) + ']' + '(timestamp, interval_start_time, interval_start_date, interval_end_time, interval_end_date, interval_kW) VALUES ' + '(' + '?' + ',' + '?' +',' + '?' + ',' + '?' + ',' + '?' + ',' + '?' + ')'
-                # cur.execute(sql_script,(ut, interval_start_time_text, interval_start_date_text,interval_end_time_text,interval_start_date_text,interval_kW))
-                #
+                #     try:
+                #         datetime_test = (datetime.strptime(time_text, '%d/%m/%Y %H:%M.%S'))
+                #         ut = (datetime_test - dtt.datetime(1970, 1, 1)).total_seconds()
+                #     except:
+                #         datetime_test = (datetime.strptime(time_text, ' %d/%m/%Y  %H:%M.%S'))
+                #         ut = (datetime_test - dtt.datetime(1970, 1, 1)).total_seconds()
+
+
+                sql_script = 'INSERT INTO' + '[' + str(car_type) + ']' + '(date, latitude, longitude, latitudedeg, longitudedeg, speed, gpsangle, altitud) VALUES ' + '(' + '?' + ',' + '?' + ',' + '?' + ',' + '?' + ',' + '?' + ',' + '?' + ',' + '?' + ',' + '?' + ')'
+
+                cur.execute(sql_script,(date_v_clean[0], latitude_v_clean[0],longitude_v_clean[0], latitudedeg_v_clean[0], longitudedeg_v_clean[0], speed_v_clean, gpsangle_v_clean, altitud_v_clean))
 
 conn.commit()
