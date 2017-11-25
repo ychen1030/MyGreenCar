@@ -181,13 +181,13 @@ custom_sidebar_link_callback = function(select){
     var somethingCoolD = setInterval(function(){
       getPoints('local','camry-cost','stm-camry-cost',function(points){
         console.log('The button points request was successful!');
-        loadCoolCReport(points);
+        loadCoolDReport(points);
       });
       if (plotCalls_analysisD > 20){
         console.log('Clear button timer');
         clearInterval (somethingCoolD);
       }else{
-        plotCalls_analysisC +=1;
+        plotCalls_analysisD +=1;
       }
     })
    }, 1000);
