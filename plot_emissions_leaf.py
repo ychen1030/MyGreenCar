@@ -15,7 +15,7 @@ cur = conn.cursor()
 
 reading_a = []
 reading_b = []
-emission_factor = 39 #gCO2/km
+emission_factor = 39 + 35 + 12 #gCO2/km
 sql_script = ('SELECT date, distance FROM camry_distance')
 sql = cur.execute(sql_script)
 

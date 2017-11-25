@@ -16,6 +16,7 @@ cur = conn.cursor()
 reading_a = []
 reading_b = []
 cost_factor = 0.0602083333333333 #$/km
+initial_cost = 23495
 sql_script = ('SELECT date, distance FROM camry_distance')
 sql = cur.execute(sql_script)
 

@@ -1,0 +1,51 @@
+Read the following to understand whats going on
+
+First, whats going on with the data...
+
+After you collect data from different trips remember to:
+1) put the data as a .csv in the folder called DATA
+2) remember to fill in the values in the main_data.csv document
+
+
+1) To create the astrodek.sqlite database
+  1.1 python structuredatabase.py --> this will create the structure needed for the
+      data
+  1.2 python populatedatabase.py -->  populate the rough data into the table with the
+      car's name
+
+  1.3 python clean_database.py -->  cleans up some of the values in the rough
+      readings and gives distance between lat and long readings
+
+  1.4 python distance_database.py --> this magic table gives you all you
+      need... and also puts up the distance by date
+
+2) To pass the information to the wallflower_db.sqlite
+  2.1 python plot_distance.py --> pass the distance measurements to the
+      wallflower_db.sqlite database
+
+  2.2 python plot_emissions.py --> pass the emissions measurement to the
+      wallflower_db.sqlite database
+
+  2.3 python plot_cost.py --> translates the distance traveled into cost....
+      puts it in the wallflower_db.sqlite database
+
+  2.4 python plot_emissions_leaf.py --> translates the distance traveled into
+      emissions from generation and distribution of electricity
+
+  2.5 python plot_cost_leaf.py --> translates the distance traveled into cost
+      for charging the car. It takes into account the electric cost of PG&E
+
+  2. localhost --> sit down, grab some popcorn and ....pause for suspense....
+      see all the awesome plots....
+
+
+FAQ
+Hey man, but then how does the whole table shananigan works??
+Well...honestly I have no idea, I just see it as magic...
+
+Hey man, this programs are super weird and you should...
+I know, its the messiest thing. I am pretty new at this so not even I truly
+understand how everything is working..
+
+Hey man we should put this on a server and run it from any computer...
+I know!!! Yingying is working on it...
