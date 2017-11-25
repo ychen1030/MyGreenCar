@@ -99,6 +99,7 @@ custom_sidebar_link_callback = function(select){
     var plotCalls_analysisA = 0;
     var plotCalls_analysisB = 0;
     var plotCalls_analysisC = 0;
+    var plotCalls_analysisD = 0;
 
     var plotSensor = setInterval( function(){
       getPoints('local','sensorreading','stm-sensor', function(points){
@@ -143,7 +144,7 @@ custom_sidebar_link_callback = function(select){
         console.log('The button points request was successful!');
         loadCoolAReport(points);
       });
-      if (plotCalls_analysisA > 1000){
+      if (plotCalls_analysisA > 20){
         console.log('Clear button timer');
         clearInterval (somethingCoolA);
       }else{
@@ -156,7 +157,7 @@ custom_sidebar_link_callback = function(select){
         console.log('The button points request was successful!');
         loadCoolBReport(points);
       });
-      if (plotCalls_analysisB > 1000){
+      if (plotCalls_analysisB > 20){
         console.log('Clear button timer');
         clearInterval (somethingCoolB);
       }else{
@@ -169,7 +170,7 @@ custom_sidebar_link_callback = function(select){
         console.log('The button points request was successful!');
         loadCoolCReport(points);
       });
-      if (plotCalls_analysisC > 1000){
+      if (plotCalls_analysisC > 20){
         console.log('Clear button timer');
         clearInterval (somethingCoolC);
       }else{
@@ -177,6 +178,18 @@ custom_sidebar_link_callback = function(select){
       }
     })
 
+    var somethingCoolD = setInterval(function(){
+      getPoints('local','camry-cost','stm-camry-cost',function(points){
+        console.log('The button points request was successful!');
+        loadCoolCReport(points);
+      });
+      if (plotCalls_analysisD > 20){
+        console.log('Clear button timer');
+        clearInterval (somethingCoolD);
+      }else{
+        plotCalls_analysisC +=1;
+      }
+    })
    }, 1000);
   }
 }
@@ -327,8 +340,33 @@ function loadCoolCReport( points ){
      plot_coolC.highcharts().series[0].setData( datapoints_coolC );
   }else{
     plot_coolC.highcharts().addSeries({
-      name: "Potential Savings",
+      name: "Potential Savings in Emissions",
       data: datapoints_coolC
+    });
+  }
+}
+
+function loadCoolDReport( points ){
+  var plot_coolD = $('#content-report-AnalysisD');
+  // var plot_button = $('#content-report-button');
+  // Check if plot has a Highcharts element
+  if( plot_coolD.highcharts() === undefined ){
+    // Create a Highcharts element
+    plot_coolD.highcharts( report_coolD );
+  }
+    // Iterate over points to place in Highcharts format
+  var datapoints_coolD = [];
+  for ( var i = 0; i < points.length; i++){
+    var at_date = new Date(points[i].at);
+    var at = at_date.getTime() - at_date.getTimezoneOffset()*60*1000; datapoints_coolD.unshift( [ at, points[i].value] );
+  }
+  // Update Highcharts plot
+  if( plot_coolD.highcharts().series.length > 0 ){
+     plot_coolD.highcharts().series[0].setData( datapoints_coolD );
+  }else{
+    plot_coolD.highcharts().addSeries({
+      name: "Potential Savings Cost",
+      data: datapoints_coolD
     });
   }
 }
@@ -375,28 +413,6 @@ var report_plot_sensor = {
     text : "Vehicle Emissions"
   }
 };
-
-var report_plot_button = {
-  chart: {
-    type: 'spline'
-  },
-  xAxis: {
-    type: 'datetime',
-    dateTimeLabelFormats: { // don't display the dummy year
-      month: '%e. %b',
-      year: '%b'
-    },
-  },
-  yAxis: {
-    title :{
-      text : "Button State (1=ON, 0=OFF)"
-    },
-  },
-  title : {
-    text : "Button State vs time"
-  }
-};
-
 
 var report_plot_button = {
   chart: {
@@ -468,8 +484,7 @@ var report_coolC = {
   xAxis: {
     type: 'datetime',
     dateTimeLabelFormats: { // don't display the dummy year
-      month: '%e. %b',
-      year: '%b'
+      year: '%Y'
     },
   },
   yAxis: {
@@ -479,5 +494,25 @@ var report_coolC = {
   },
   title : {
     text : "Potential saving from Vehicle Emissions"
+  }
+};
+
+var report_coolD = {
+  chart: {
+    type: 'spline'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: { // don't display the dummy year
+      year: '%Y'
+    },
+  },
+  yAxis: {
+    title :{
+      text : "Costs"
+    },
+  },
+  title : {
+    text : "Potential savings USD"
   }
 };
