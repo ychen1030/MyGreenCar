@@ -1,4 +1,6 @@
 # MyGreenCar Server
+ppt: https://goo.gl/Vmun2T
+
 Our team built a GPS location-tracking devise to keep track of driving behaviors of a vehicle fleet, analyzed the data to get fuel consumption and CO2 equivalence (CO2e) emissions. We also projected potential money and CO2e emissions savings in a given period if the user switches to other types of vehicle at their choice. Providing the information for users, our goal is to promote the adoption of greener vehicle among individuals as well as fleet managers. From our preliminary results, our product could reduce life cycle emissions by a factor of 5. And given that transportation makes up 30% of the total US emissions, if 10% of vehicle owners follow our recommendations, our product could potentially save 70 million metric tons of CO2e in the US.
 
 
